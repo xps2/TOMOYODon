@@ -28,3 +28,8 @@
 
 ## 実行方法
 * `python tomoyodon.py`
+
+## 依存ライブラリ
+* [Mastodon.py](https://github.com/halcy/Mastodon.py)
+* [retry](https://github.com/invl/retry)
+* [watchdog](https://github.com/gorakhargosh/watchdog)
