@@ -1,0 +1,12 @@
+[API]
+api_base_url=https://md.xps2.net
+client_id=tomoyodon_clientcred.secret
+access_token=tomoyodon_usercred.secret
+
+[Path]
+target=X:\target_path
+
+[TOOT]
+toot_str=#test
+visibility=public
+sensitive=true

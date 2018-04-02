@@ -1,0 +1,6 @@
+[Token]
+api_base_url=https://md.xps2.net
+username=test@example.com
+password=passw0rd
+client_id=tomoyodon_clientcred.secret
+access_token=tomoyodon_usercred.secret
