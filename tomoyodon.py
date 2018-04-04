@@ -9,7 +9,7 @@ from ConfigParser import ConfigParser
 from logging import basicConfig, getLogger, INFO
 from mastodon import Mastodon
 from retry import retry
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
 parser = ArgumentParser(
@@ -60,18 +60,20 @@ def get_access_token():
     )
 
 
-class ChangeHandler(FileSystemEventHandler):
+class ChangeHandler(PatternMatchingEventHandler):
 
-    def __init__(self, mastodon, toot_str, sensitive, visibility):
+    def __init__(self, mastodon, toot_str, sensitive, visibility,
+                 patterns=None, ignore_patterns=None,
+                 ignore_directories=False, case_sensitive=False):
+        super(ChangeHandler, self).__init__(
+            patterns, ignore_patterns, ignore_directories, case_sensitive
+        )
         self.mastodon = mastodon
         self.toot_str = toot_str
         self.sensitive = sensitive
         self.visibility = visibility
 
     def on_created(self, event):
-        if event.is_directory:
-            return
-
         logger.info(event.src_path)
         media_ids = []
         media = self.media_post(event.src_path)
@@ -106,7 +108,13 @@ def toot():
     sensitive = config.getboolean(section_toot, 'sensitive')
     visibility = config.get(section_toot, 'visibility')
 
-    event_handler = ChangeHandler(mastodon, toot_str, sensitive, visibility)
+    event_handler = ChangeHandler(
+        mastodon,
+        toot_str,
+        sensitive,
+        visibility,
+        ignore_directories=True
+    )
     observer = Observer()
     observer.schedule(event_handler, target_path, recursive=True)
     observer.start()
