@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import io
 import sys
 import time
 
@@ -28,7 +29,7 @@ logger = getLogger(__name__)
 
 def get_access_token():
     config = ConfigParser()
-    config.readfp(open('token.ini'))
+    config.readfp(io.open('token.ini', 'r', encoding='utf_8_sig'))
 
     section = 'Token'
     api_base_url = config.get(section, 'api_base_url')
@@ -89,7 +90,7 @@ class ChangeHandler(FileSystemEventHandler):
 
 def toot():
     config = ConfigParser()
-    config.readfp(open('tomoyodon.ini'))
+    config.readfp(io.open('tomoyodon.ini', 'r', encoding='utf_8_sig'))
     section_api = 'API'
 
     mastodon = Mastodon(
