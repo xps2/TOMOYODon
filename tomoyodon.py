@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import time
+
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
 from logging import basicConfig, getLogger, INFO
 from mastodon import Mastodon
 from retry import retry
-import sys
-import time
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -14,7 +15,8 @@ parser = ArgumentParser(
     prog="TOMOYODon"
 )
 group = parser.add_mutually_exclusive_group()
-group.add_argument('-t', '--token',
+group.add_argument(
+    '-t', '--token',
     action='store_true',
     help='get access token'
 )
@@ -38,10 +40,10 @@ def get_access_token():
     scopes = ['read', 'write']
 
     Mastodon.create_app(
-         'TOMOYODon',
-         scopes=scopes,
-         api_base_url=api_base_url,
-         to_file=client_id
+        'TOMOYODon',
+        scopes=scopes,
+        api_base_url=api_base_url,
+        to_file=client_id
     )
 
     mastodon = Mastodon(
@@ -95,14 +97,14 @@ def toot():
         access_token=config.get(section_api, 'access_token'),
         api_base_url=config.get(section_api, 'api_base_url')
     )
-    
+
     target_path = config.get('Path', 'target')
 
     section_toot = 'TOOT'
     toot_str = config.get(section_toot, 'toot_str')
-    sensitive= config.getboolean(section_toot, 'sensitive')
-    visibility= config.get(section_toot, 'visibility')
-    
+    sensitive = config.getboolean(section_toot, 'sensitive')
+    visibility = config.get(section_toot, 'visibility')
+
     event_handler = ChangeHandler(mastodon, toot_str, sensitive, visibility)
     observer = Observer()
     observer.schedule(event_handler, target_path, recursive=True)
@@ -117,12 +119,12 @@ def toot():
 
 def main():
     args = parser.parse_args(sys.argv[1:])
-    
+
     if args.token:
         get_access_token()
         sys.exit(0)
     else:
         toot()
-    
+
 if __name__ == '__main__':
     main()
