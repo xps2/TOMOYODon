@@ -29,6 +29,11 @@
 ## 実行方法
 * `python tomoyodon.py`
 
+## 動作確認環境
+* Windows + Python 2.7
+* Windows + Python 3.6
+* 他環境は確認してませんが、依存ライブラリのwatchdogが対応しているOSであれば動くかもしれません。
+
 ## 依存ライブラリ
 * [Mastodon.py](https://github.com/halcy/Mastodon.py)
 * [retry](https://github.com/invl/retry)
