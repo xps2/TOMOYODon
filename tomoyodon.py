@@ -5,7 +5,10 @@ import sys
 import time
 
 from argparse import ArgumentParser
-from ConfigParser import ConfigParser
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 from logging import basicConfig, getLogger, INFO
 from mastodon import Mastodon
 from retry import retry
